@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Marketplace - Best Deals</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com""")/>>
     <style>
         body { font-family: 'Arial', sans-serif; margin: 0; background: #f4f4f4; }
         
-        /* এনিমেটেড ইমেজ গ্রিড */
+        /* Animated Image Grid */
         .image-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -23,10 +23,10 @@
             height: 100px;
             object-fit: cover;
             border-radius: 8px;
-            animation: pulse 2s infinite; /* নড়াচড়া করার এনিমেশন */
+            /* Animation pulse removed for cleaner look, handled by animate.css classes */
         }
 
-        /* সার্চ ইঞ্জিন সেকশন */
+        /* Search Engine Section */
         .search-container {
             text-align: center;
             padding: 50px 20px;
@@ -39,9 +39,10 @@
             border-radius: 30px;
             border: none;
             font-size: 18px;
+            outline: none;
         }
 
-        /* প্রোডাক্ট ডিসপ্লে */
+        /* Product Display */
         .product-section {
             display: flex;
             flex-wrap: wrap;
@@ -57,54 +58,58 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             text-align: center;
         }
-        .card h3 { color: #d9534f; }
+        .card h3 { color: #d9534f; font-size: 1.2rem; }
         .buy-btn {
+            display: inline-block;
+            margin-top: 10px;
             background: #ff9900;
             color: black;
             padding: 10px 20px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 5px;
+            transition: 0.3s;
         }
+        .buy-btn:hover { background: #e68a00; }
     </style>
 </head>
 <body>
 
-    <!-- ১. এনিমেটেড ছবি (Pitbull Style) -->
+    <!-- 1. Animated Image Grid -->
     <div class="image-grid" id="imageGrid">
-        <!-- জাভাস্ক্রিপ্ট দিয়ে এখানে ছবি লোড হবে -->
+        <!-- Images loaded via JS -->
     </div>
 
-    <!-- ২. সার্চ ইঞ্জিন -->
+    <!-- 2. Search Engine -->
     <div class="search-container">
         <h1>Find Best Marketplace Offers</h1>
-        <input type="text" id="searchInput" class="search-bar" placeholder="সার্চ করুন (যেমন: Mobile, Laptop, Offers)...">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search for products (e.g., Mobile, Laptop, Deals)...">
     </div>
 
-    <!-- ৩. অটোমেটিক ডিলস এবং এসইও প্রোডাক্ট -->
+    <!-- 3. Product Display -->
     <div class="product-section" id="productDisplay">
-        <!-- প্রোডাক্ট কার্ড এখানে দেখা যাবে -->
+        <!-- Product cards injected here -->
     </div>
 
     <script>
-        // ডামি প্রোডাক্ট ডেটা (এখানে আপনি আপনার SEO করা প্রোডাক্ট যোগ করবেন)
+        // Updated product data for USA market (USD Prices)
         const products = [
-            { name: "Samsung Galaxy Offer", price: "৳৪৫,০০০", shop: "Daraz", link: "#" },
-            { name: "iPhone 15 Discount", price: "৳৯৮,০০০", shop: "Amazon", link: "#" },
-            { name: "Fast Charging Cable", price: "৳৫০০", shop: "Own Store", link: "#" },
-            { name: "Wireless Headphone", price: "৳২,৫০০", shop: "AliExpress", link: "#" }
+            { name: "Samsung Galaxy S24 Ultra", price: "$1,199", shop: "Best Buy", link: "#" },
+            { name: "iPhone 15 Pro Discount", price: "$999", shop: "Amazon", link: "#" },
+            { name: "USB-C Fast Charging Cable", price: "$15.99", shop: "Walmart", link: "#" },
+            { name: "Wireless Noise Cancelling Headphones", price: "$249.99", shop: "AliExpress", link: "#" }
         ];
 
-        // ছবি অটো জেনারেট (অ্যানিমেশনের জন্য)
+        // Generate Grid Images
         const grid = document.getElementById('imageGrid');
         for(let i=1; i<=20; i++) {
             let img = document.createElement('img');
             img.src = `https://picsum.photos{i}`;
-            img.className = "animate__animated animate__fadeInUp"; // Animate.css ক্লাস
+            img.className = "animate__animated animate__fadeInUp"; 
             grid.appendChild(img);
         }
 
-        // সার্চ ফাংশন
+        // Search and Display Functions
         const searchInput = document.getElementById('searchInput');
         const display = document.getElementById('productDisplay');
 
@@ -115,9 +120,9 @@
             filtered.forEach(p => {
                 display.innerHTML += `
                     <div class="card animate__animated animate__zoomIn">
-                        <img src="https://via.placeholder.com" style="width:100%">
+                        <img src="https://via.placeholder.com" style="width:100%; border-radius: 5px;">
                         <h3>${p.name}</h3>
-                        <p>Price: ${p.price}</p>
+                        <p>Price: <strong>${p.price}</strong></p>
                         <p>Market: <strong>${p.shop}</strong></p>
                         <a href="${p.link}" class="buy-btn">View Offer</a>
                     </div>
@@ -126,9 +131,10 @@
         }
 
         searchInput.addEventListener('input', (e) => showProducts(e.target.value));
-        showProducts(); // শুরুতে সব দেখাবে
+        showProducts(); // Initial Load
     </script>
 </body>
 </html>
+
 
 
