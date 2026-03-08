@@ -1,66 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Deals - Auto Update</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; text-align: center; }
-        .header { background: #232f3e; color: white; padding: 40px; }
-        .section-title { margin-top: 30px; color: #444; font-size: 24px; border-bottom: 2px solid #ddd; display: inline-block; padding-bottom: 5px; }
-        .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
-        .card { background: white; width: 260px; margin: 15px; padding: 15px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; }
-        .card img { width: 100%; height: 180px; object-fit: contain; }
-        .price { font-size: 20px; color: #B12704; font-weight: bold; }
-        .buy-btn { display: block; background: #ffd814; color: #111; text-decoration: none; padding: 10px; border-radius: 5px; font-weight: bold; margin-top: 10px; }
-    </style>
-</head>
-<body>
+safe-marketplace
+│
+├── frontend
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── marketplace.html
+│   ├── product.html
+│   ├── upload.html
+│   ├── chat.html
+│   └── css
+│       ├── style.css
+│       └── marketplace.css
+│
+├── backend
+│   ├── server.js
+│   ├── routes
+│   │   ├── auth.js
+│   │   ├── products.js
+│   │   ├── chat.js
+│   │   └── admin.js
+│   │
+│   ├── models
+│   │   ├── User.js
+│   │   ├── Product.js
+│   │   └── Chat.js
+│   │
+│   └── middleware
+│       └── authMiddleware.js
+│
+├── admin
+│   ├── dashboard.html
+│   ├── users.html
+│   └── verify-products.html
+│
+├── storage
+│   └── videos
+│
+├── package.json
+└── README.md
+const express = require("express")
+const mongoose = require("mongoose")
+const cors = require("cors")
+const app = express()
 
-<div class="header">
-    <h1>🔥 Smart Global Marketplace</h1>
-    <p>Handpicked Deals & Automated Daily Offers</p>
-</div>
+app.use(express.json())
+app.use(cors())
 
-<!-- আপনার নিজের বসানো অফার (Manual) -->
-<h2 class="section-title">⭐ Featured Deals (By You)</h2>
-<div class="container" id="manual-products">
-    <!-- এখানে আপনার ৫টি অফার থাকবে -->
-</div>
+mongoose.connect("mongodb://localhost:27017/marketplace")
 
-<!-- অটোমেটিক অফার (Auto Update) -->
-<h2 class="section-title">🚀 Daily Flash Deals (Auto-Updated)</h2>
-<div class="container">
-    <!-- এই উইজেটটি অটোমেটিক অফার দেখাবে -->
-    <script src="https://rss.app" async></script>
-</div>
+app.use("/api/auth",require("./routes/auth"))
+app.use("/api/products",require("./routes/products"))
+app.use("/api/chat",require("./routes/chat"))
+app.use("/api/admin",require("./routes/admin"))
+
+app.listen(3000,()=>{
+console.log("Server running")
+})
+const mongoose=require("mongoose")
+
+const UserSchema=new mongoose.Schema({
+
+name:String,
+
+email:String,
+
+password:String,
+
+nid:String,
+
+verified:Boolean
+
+})
+
+const mongoose=require("mongoose")
+
+const ProductSchema=new mongoose.Schema({
+
+name:String,
+
+video:String,
+
+seller:String,
+
+status:String,
+
+createdAt:Date
+
+})
+
+module.exports=mongoose.model("Product",ProductSchema)
+module.exports=mongoose.model("User",UserSchema)
+const mongoose=require("mongoose")
+
+const ChatSchema=new mongoose.Schema({
+
+sender:String,
+
+receiver:String,
+
+message:String,
+
+time:Date
+
+})
+
+module.exports=mongoose.model("Chat",ChatSchema)
+router.post("/upload",async(req,res)=>{
+
+let product=new Product({
+
+name:req.body.name,
+
+video:req.body.video,
+
+seller:req.body.user,
+
+status:"pending",
+
+createdAt:new Date()
+
+})
+
+await product.save()
+
+res.json({message:"Product uploaded"})
+
+})
+<div id="products"></div>
 
 <script>
-    // এখানে আপনি নিজের ৫টি লিংক বসান
-    const myDeals = [
-        { name: "iPhone 15 Pro", price: "$999", img: "https://m.media-amazon.com", link: "আপনার_লিংক_১" },
-        { name: "Samsung Watch", price: "$249", img: "https://m.media-amazon.com", link: "আপনার_লিংক_২" },
-        { name: "Sony Headphones", price: "$348", img: "https://m.media-amazon.com", link: "আপনার_লিংক_৩" },
-        { name: "Gaming Mouse", price: "$49", img: "https://m.media-amazon.com", link: "আপনার_লিংক_৪" },
-        { name: "Kindle Reader", price: "$149", img: "https://m.media-amazon.com", link: "আপনার_লিংক_৫" }
-    ];
 
-    const manualDiv = document.getElementById('manual-products');
-    myDeals.forEach(p => {
-        manualDiv.innerHTML += `
-            <div class="card">
-                <img src="${p.img}">
-                <h3>${p.name}</h3>
-                <p class="price">${p.price}</p>
-                <a href="${p.link}" target="_blank" class="buy-btn">View Offer</a>
-            </div>
-        `;
-    });
+fetch("http://localhost:3000/api/products")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let html=""
+
+data.forEach(p=>{
+
+html+=`
+
+<div class="product">
+
+<h3>${p.name}</h3>
+
+<video controls src="${p.video}"></video>
+
+</div>
+
+`
+
+})
+
+document.getElementById("products").innerHTML=html
+
+})
+
 </script>
+router.post("/approve/:id",async(req,res)=>{
 
-</body>
-</html>
+await Product.findByIdAndUpdate(req.params.id,{
 
+status:"approved"
 
+})
 
+res.json({message:"Approved"})
 
+})
+<a href="https://cybercrime.gov.bd" target="_blank">
+<button>Report Scam</button>
+</a>
+{
+"name":"safe-marketplace",
+"version":"1.0.0",
+"main":"server.js",
+"scripts":{
+"start":"node server.js"
+},
+"dependencies":{
+"express":"^4.18.2",
+"mongoose":"^7.0.0",
+"cors":"^2.8.5"
+}
+}
