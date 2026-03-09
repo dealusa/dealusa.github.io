@@ -1,188 +1,22 @@
-safe-marketplace
-│
-├── frontend
-│   ├── index.html
-│   ├── login.html
-│   ├── register.html
-│   ├── marketplace.html
-│   ├── product.html
-│   ├── upload.html
-│   ├── chat.html
-│   └── css
-│       ├── style.css
-│       └── marketplace.css
-│
-├── backend
-│   ├── server.js
-│   ├── routes
-│   │   ├── auth.js
-│   │   ├── products.js
-│   │   ├── chat.js
-│   │   └── admin.js
-│   │
-│   ├── models
-│   │   ├── User.js
-│   │   ├── Product.js
-│   │   └── Chat.js
-│   │
-│   └── middleware
-│       └── authMiddleware.js
-│
-├── admin
-│   ├── dashboard.html
-│   ├── users.html
-│   └── verify-products.html
-│
-├── storage
-│   └── videos
-│
-├── package.json
-└── README.md
-const express = require("express")
-const mongoose = require("mongoose")
-const cors = require("cors")
-const app = express()
+<!DOCTYPE html>
+<html>
+<head>
+<title>Live Shop</title>
+</head>
 
-app.use(express.json())
-app.use(cors())
+<body>
 
-mongoose.connect("mongodb://localhost:27017/marketplace")
+<h1>Live Product Shop</h1>
 
-app.use("/api/auth",require("./routes/auth"))
-app.use("/api/products",require("./routes/products"))
-app.use("/api/chat",require("./routes/chat"))
-app.use("/api/admin",require("./routes/admin"))
+<p>এখানে লাইভ ভিডিও হবে</p>
 
-app.listen(3000,()=>{
-console.log("Server running")
-})
-const mongoose=require("mongoose")
+<iframe width="560" height="315"
+src="https://www.youtube.com/embed/live_stream?channel=YOURCHANNELID">
+</iframe>
 
-const UserSchema=new mongoose.Schema({
+<br><br>
 
-name:String,
+<button>Order Now</button>
 
-email:String,
-
-password:String,
-
-nid:String,
-
-verified:Boolean
-
-})
-
-const mongoose=require("mongoose")
-
-const ProductSchema=new mongoose.Schema({
-
-name:String,
-
-video:String,
-
-seller:String,
-
-status:String,
-
-createdAt:Date
-
-})
-
-module.exports=mongoose.model("Product",ProductSchema)
-module.exports=mongoose.model("User",UserSchema)
-const mongoose=require("mongoose")
-
-const ChatSchema=new mongoose.Schema({
-
-sender:String,
-
-receiver:String,
-
-message:String,
-
-time:Date
-
-})
-
-module.exports=mongoose.model("Chat",ChatSchema)
-router.post("/upload",async(req,res)=>{
-
-let product=new Product({
-
-name:req.body.name,
-
-video:req.body.video,
-
-seller:req.body.user,
-
-status:"pending",
-
-createdAt:new Date()
-
-})
-
-await product.save()
-
-res.json({message:"Product uploaded"})
-
-})
-<div id="products"></div>
-
-<script>
-
-fetch("http://localhost:3000/api/products")
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let html=""
-
-data.forEach(p=>{
-
-html+=`
-
-<div class="product">
-
-<h3>${p.name}</h3>
-
-<video controls src="${p.video}"></video>
-
-</div>
-
-`
-
-})
-
-document.getElementById("products").innerHTML=html
-
-})
-
-</script>
-router.post("/approve/:id",async(req,res)=>{
-
-await Product.findByIdAndUpdate(req.params.id,{
-
-status:"approved"
-
-})
-
-res.json({message:"Approved"})
-
-})
-<a href="https://cybercrime.gov.bd" target="_blank">
-<button>Report Scam</button>
-</a>
-{
-"name":"safe-marketplace",
-"version":"1.0.0",
-"main":"server.js",
-"scripts":{
-"start":"node server.js"
-},
-"dependencies":{
-"express":"^4.18.2",
-"mongoose":"^7.0.0",
-"cors":"^2.8.5"
-}
-}
+</body>
+</html>
